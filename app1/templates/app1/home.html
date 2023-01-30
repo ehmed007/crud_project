@@ -1,0 +1,56 @@
+{% extends "app1/base.html" %} 
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-4">
+        <form action="/add_student/" method="post">
+            {% csrf_token %}
+            <h4 class="text-center alert alert-success" >ADD STUDENT</h4>
+            {{form.as_p}}              
+              <input type="submit" class="btn btn-success mb-5" value="Add Student">
+        </form>
+    </div>
+
+    <div class="col-sm-8">
+        <h4 class="text-center alert alert-success">SHOW STUDENT INFORMATION</h4>
+        {% if data %}
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in data %}
+                <tr>
+                  <th scope="row">{{i.id}}</th>
+                  <td>{{i.name}}</td>
+                  <td>{{i.email}}</td>
+                  <td>{{i.password}}</td>
+                  <td>
+                    <!-- <form action="{% url 'edit' i.id %}" method="get" class="d-inline">
+                      <input type="submit" class="btn btn-warning btn-sm" value="Edit">
+                    </form> -->
+                    <a href="{% url 'edit' i.id %}" class="btn btn-warning btn-sm">Update</a>
+                    <form action="{% url 'del' i.id %}" method="post" class="d-inline"> {% csrf_token %}
+                      <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        {% else %}
+            <h4 class="text-center alert alert-success">NO RECORDS</h4>
+        {% endif %}
+    </div>
+
+</div>
+
+
+{% endblock content %}
